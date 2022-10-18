@@ -1,6 +1,20 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
+function randomInt(min, max) {
+  if (!max) {
+    max=min
+    min=0
+  }
+  
+  var rand = Math.random()
+  return Math.floor(min*(1 - rand) + rand*max)
+}
+
+function getRandomItem(list) {
+  return list[randomInt(list.length)]
+}
+
 function generatePassword() {
   var userInput = window.prompt("Enter here");
 
@@ -13,6 +27,7 @@ function generatePassword() {
 
   if (passwordLength < 8 || passwordLength > 128) {
     window.alert("password length must be between 8 and 128 characters");
+    return
   }
 
   var userWantsNumbers = window.confirm("Would you like to include numbers in your password?");
@@ -23,7 +38,7 @@ function generatePassword() {
   var numberList = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   var symbolList = ["!", "@", "#", "$", "%", "^", "&", "*"];
   var lowerCaseList = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-  var upperCaseList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  var upperCaseList = [];
 
   var optionsCart = [];
 
@@ -41,14 +56,28 @@ function generatePassword() {
   }
 
   if (userWantsLowercase === true) {
-    optionsCart.push(lowercaseList);
+    optionsCart.push(lowerCaseList);
   }
 
   if (userWantsUppercase === true) {
-    optionsCart.push(uppercaserList);
+    optionsCart.push(upperCaseList);
   }
 
-  console.log(optionsCart);
+  if (optionsCart.length === 0) {
+    optionsCart.push(lowerCaseList)
+  }
+
+
+  var generatePassword = "" ;
+
+  for (var i = 0 ; i < passwordLength; i++) {
+    var randomList = getRandomItem(optionsCart);
+    var randomChar = getRandomItem(randomList);
+    generatePassword += randomChar;
+  }
+
+
+  return generatePassword
 
 }
 
